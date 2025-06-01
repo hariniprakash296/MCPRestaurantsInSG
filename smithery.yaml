@@ -1,0 +1,46 @@
+# Smithery configuration file
+name: Singapore-restaurant-locator
+version: 1.0.0
+description: "Search for restaurants and food places in Singapore using Google Places API"
+author: "Harini Prakash"
+homepage: "https://github.com/hariniprakash296/MCPRestaurantsInSG"
+license: "MIT"
+
+# Server configuration
+server:
+  # Smithery expects HTTP transport on port 8000
+  transport: http
+  port: 8000
+  host: "0.0.0.0"
+
+# Environment variables that users need to provide
+environment:
+  required:
+    - name: GOOGLE_PLACES_API_KEY
+      description: "Google Places API key for restaurant search"
+      type: string
+
+# Tool descriptions for Smithery marketplace
+tools:
+  - name: search_restaurants
+    description: "Search for restaurants or food places in Singapore using queries like 'laksa' or 'vegan tiramisu'"
+    parameters:
+      - name: query
+        type: string
+        description: "Search term for food or restaurant type"
+        required: true
+
+# Categories for Smithery marketplace
+categories:
+  - "Food & Dining"
+  - "Local Search"
+  - "Singapore"
+
+# Keywords for discoverability
+keywords:
+  - "restaurant"
+  - "food"
+  - "singapore"
+  - "places"
+  - "search"
+  - "dining"

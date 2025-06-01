@@ -7,7 +7,23 @@ MCP to find restaurants selling a specific food in SG
    a. Name  
    b. Address  
    c. Rating  
-   d. Price level  
+   d. Price level 
+
+- Search restaurants by cuisine type, dish name, or restaurant name
+- Returns restaurant name, address, price level, and rating
+- Focused on Singapore locations
+- Built with FastMCP for high performance
+
+## Usage Examples
+
+- "laksa" - Find laksa restaurants
+- "vegan tiramisu" - Find places serving vegan tiramisu
+- "michelin star" - Find high-end restaurants
+- "halal chinese food" - Find halal Chinese restaurants
+
+## License
+
+MIT 
 
 Examples:
 
