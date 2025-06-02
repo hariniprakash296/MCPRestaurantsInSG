@@ -1,28 +1,20 @@
 from mcp.server.fastmcp import FastMCP
 import requests
-from typing import List, Dict, Union
 import os
 from dotenv import load_dotenv
+from typing import List, Dict, Union
 
 # Load API key from environment
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
 BASE_URL = "https://places.googleapis.com/v1/places:searchText"
 
-# Create the MCP server with HTTP transport
-mcp = FastMCP("GooglePlacesRestaurantLocator")
+# Create FastMCP server (NOT FastAPI)
+mcp = FastMCP("Google Places Restaurant Finder")
 
-@mcp.tool()
-def search_restaurants(query: str) -> List[Dict[str, Union[str, int, float]]]:
+def search_restaurants_logic(query: str) -> List[Dict[str, Union[str, int, float]]]:
     """
-    Search for restaurants or food places in Singapore using a query like 'laksa' or 'vegan tiramisu'.
-    Returns a list of place names, addresses, price level, and ratings if available.
-   
-    Args:
-        query: Search term for food or restaurant type
-       
-    Returns:
-        List of dictionaries containing restaurant information
+    Core logic for searching restaurants
     """
     if not GOOGLE_API_KEY:
         return [{"error": "Google Places API key not configured"}]
@@ -65,13 +57,42 @@ def search_restaurants(query: str) -> List[Dict[str, Union[str, int, float]]]:
     except Exception as e:
         return [{"error": f"Unexpected error: {str(e)}"}]
 
-# Add health check endpoint for Smithery
-@mcp.get("/health")
-def health_check():
-    return {"status": "healthy", "service": "Google Places Restaurant Locator"}
+@mcp.tool()
+def search_restaurants(query: str) -> str:
+    """
+    Search for restaurants or food places in Singapore using a query like 'laksa' or 'vegan tiramisu'.
+    Returns information about restaurants including names, addresses, price levels, and ratings.
+    
+    Args:
+        query: The search query (e.g., 'laksa', 'vegan tiramisu', 'italian food')
+    
+    Returns:
+        A formatted string with restaurant information
+    """
+    results = search_restaurants_logic(query)
+    
+    # Check if there's an error in the results
+    if results and "error" in results[0]:
+        return f"Error: {results[0]['error']}"
+    
+    if results and "message" in results[0]:
+        return results[0]["message"]
+    
+    # Format the results nicely
+    formatted_results = []
+    for i, restaurant in enumerate(results, 1):
+        formatted_results.append(
+            f"{i}. {restaurant['name']}\n"
+            f"   Address: {restaurant['address']}\n"
+            f"   Price Level: {restaurant['price_level']}\n"
+            f"   Rating: {restaurant['rating']}\n"
+        )
+    
+    return "\n".join(formatted_results)
 
+# The MCP server object must be available at module level
+# This is what the MCP runtime is looking for
 if __name__ == "__main__":
-    print("🚀 Starting MCP Server for Smithery deployment...")
-    # Smithery requires HTTP transport on port 8000
-    port = int(os.environ.get("PORT", 8000))
-    mcp.run(transport="http", port=port, host="0.0.0.0")
+    # For MCP servers, you typically don't run them directly
+    # They are started by the MCP client
+    print("This is an MCP server. It should be started by an MCP client, not run directly.")
