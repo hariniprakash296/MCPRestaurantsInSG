@@ -6,6 +6,27 @@ author: "Harini Prakash"
 homepage: "https://github.com/hariniprakash296/MCPRestaurantsInSG"
 license: "MIT"
 
+# Runtime configuration - using container as suggested
+runtime: "container"
+
+# Build configuration
+build:
+  dockerfile: "Dockerfile"           # Path to your Dockerfile
+  dockerBuildPath: "."               # Docker build context
+
+# Start command configuration
+startCommand:
+  type: "http"
+  configSchema:                      # JSON Schema for configuration
+    type: "object"
+    properties:
+      apiKey:
+        type: "string"
+        description: "Your Google Places API key"
+    required: ["apiKey"]
+  exampleConfig:
+    apiKey: "your-google-places-api-key-here"
+    
 # Server configuration
 server:
   # Smithery expects HTTP transport on port 8000
