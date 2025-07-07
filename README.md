@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/hariniprakash296-mcprestaurantsinsg-badge.png)](https://mseep.ai/app/hariniprakash296-mcprestaurantsinsg)
+
 # MCPRestaurantsInSG
 MCP to find restaurants selling a specific food in SG
 1. Accepts a **food/restaurant query**.
